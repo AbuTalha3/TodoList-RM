@@ -13,10 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
       index: 1,
     },
     {
-      text: 'car wash',
+      text: 'Car wash',
       completed: false,
       index: 2,
     },
+    {
+      text: 'Do the dishes',
+      completed: false,
+      index: 3,
+    }
   ];
 
   // Initial rendering of existing todos
