@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       text: 'Do the dishes',
       completed: false,
       index: 3,
-    }
+    },
   ];
 
   // Initial rendering of existing todos
