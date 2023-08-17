@@ -5,7 +5,6 @@
 }
 
 .main {
-  background-color: rgb(255, 255, 255);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -13,7 +12,7 @@
 }
 
 .container {
-  background-color: #fff;
+  background-color: #eae6e6;
   border-radius: 5px;
   width: 400px;
   height: auto;
@@ -52,7 +51,7 @@ h2 {
   font-size: 0.9rem;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   width: 100%;
-  background-color: rgb(254, 254, 254);
+  background-color: rgb(177, 251, 130);
   height: 50px;
 }
 
