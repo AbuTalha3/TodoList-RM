@@ -1,5 +1,4 @@
 /* eslint-disable no-use-before-define */
-/* eslint-disable no-use-before-define */
 import './style.css';
 
 document.addEventListener('DOMContentLoaded', () => {

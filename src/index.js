@@ -6,23 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addButton = document.querySelector('#add-button');
   const todosContainer = document.querySelector('.todos-container');
 
-  let todos = [
-    {
-      text: 'Grocery',
-      completed: false,
-      index: 1,
-    },
-    {
-      text: 'Car wash',
-      completed: false,
-      index: 2,
-    },
-    {
-      text: 'Do the dishes',
-      completed: false,
-      index: 3,
-    },
-  ];
+  let todos = [];
 
   // Initial rendering of existing todos
   todos.forEach(renderTodoItem);
