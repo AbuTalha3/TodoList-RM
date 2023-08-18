@@ -119,6 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
       todosContainer.innerHTML = '';
     });
   }
-
+  
   refreshIt();
-});
+  });
