@@ -1,6 +1,6 @@
 import './style.css';
 import { renderTodoItem, removeHorizontalLine, saveTodosToLocalStorage } from './rendering';
-import { attachEventListeners, clearCompletedTodos, refreshTodos } from './eventListeners';
+import { attachEventListeners } from './eventListeners';
 
 document.addEventListener('DOMContentLoaded', () => {
   const textInputField = document.querySelector('#text-input-field');
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-  todos.forEach(todoItem => renderTodoItem(todosContainer, todoItem));
+  todos.forEach(todoItem => renderTodoItem(todosContainer, todos, todoItem)); // Pass 'todos' array
 
   addButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -31,7 +31,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTodoItem(todosContainer, todoItem);
   });
 
-  // ... (rest of the code)
-  
   attachEventListeners(todos, todosContainer);
 });
