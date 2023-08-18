@@ -102,3 +102,26 @@ hr {
   outline: none;
   cursor: pointer;
 }
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+  .container {
+    width: 90%; /* Adjust as needed */
+  }
+
+  #todo-form input {
+    width: 100%; /* Full width on small screens */
+  }
+
+  .todo-item-container p {
+    width: 100%; /* Full width on small screens */
+  }
+
+  .clear-it {
+    font-size: 0.8rem; /* Adjust font size for smaller screens */
+  }
+
+  .heading h2 {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}
