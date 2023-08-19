@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const addButton = document.querySelector('#add-button');
   const todosContainer = document.querySelector('.todos-container');
 
+  let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
   function removeHorizontalLine(todoItemId) {
     const hrId = `${todoItemId}-hr`;
     const horizontalLine = document.getElementById(hrId);

@@ -1,9 +1,24 @@
+import './style.css';
+import { updateStatus, clearCompleted } from '../modules/todosStatus.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const textInputField = document.querySelector('#text-input-field');
   const addButton = document.querySelector('#add-button');
   const todosContainer = document.querySelector('.todos-container');
 
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+  function saveTodosToLocalStorage() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
+
+  function removeHorizontalLine(todoItemId) {
+    const hrId = `${todoItemId}-hr`;
+    const horizontalLine = document.getElementById(hrId);
+    if (horizontalLine) {
+      horizontalLine.parentElement.removeChild(horizontalLine);
+    }
+  }
 
   function renderTodoItem(todoItem) {
     const todoItemContainer = document.createElement('div');
@@ -67,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     checkbox.addEventListener('change', () => {
       todoItem.completed = checkbox.checked;
+      updateStatus(todoItem.index, checkbox.checked);
+      saveTodosToLocalStorage();
     });
 
     const hr = document.createElement('hr');
@@ -74,9 +91,33 @@ document.addEventListener('DOMContentLoaded', () => {
     todosContainer.appendChild(hr);
   }
 
+  todos.forEach(renderTodoItem);
+
+  addButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (textInputField.value.trim().length === 0) {
+      return;
+    }
+
+    const todoItem = {
+      text: textInputField.value,
+      completed: false,
+      index: todos.length + 1,
+    };
+
+    todos.push(todoItem);
+    saveTodosToLocalStorage();
+
+    textInputField.value = '';
+
+    renderTodoItem(todoItem);
+  });
+
   const clearButton = document.querySelector('.clearer');
 
   clearButton.addEventListener('click', () => {
+    todos = clearCompleted(todos);
+
     todosContainer.innerHTML = '';
     todos.forEach((todoItem, index) => {
       todoItem.index = index + 1;
