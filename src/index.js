@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import './style.css';
 import { updateStatus, clearCompleted } from '../modules/todosStatus.js';
 
@@ -9,27 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-  todos.forEach(renderTodoItem);
-
-  addButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (textInputField.value.trim().length === 0) {
-      return;
+  function removeHorizontalLine(todoItemId) {
+    const hrId = `${todoItemId}-hr`;
+    const horizontalLine = document.getElementById(hrId);
+    if (horizontalLine) {
+      horizontalLine.parentElement.removeChild(horizontalLine);
     }
+  }
 
-    const todoItem = {
-      text: textInputField.value,
-      completed: false,
-      index: todos.length + 1,
-    };
-
-    todos.push(todoItem);
-    saveTodosToLocalStorage();
-
-    textInputField.value = '';
-
-    renderTodoItem(todoItem);
-  });
+  function saveTodosToLocalStorage() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
 
   function renderTodoItem(todoItem) {
     const todoItemContainer = document.createElement('div');
@@ -102,13 +91,27 @@ document.addEventListener('DOMContentLoaded', () => {
     todosContainer.appendChild(hr);
   }
 
-  function removeHorizontalLine(todoItemId) {
-    const hrId = `${todoItemId}-hr`;
-    const horizontalLine = document.getElementById(hrId);
-    if (horizontalLine) {
-      horizontalLine.parentElement.removeChild(horizontalLine);
+  todos.forEach(renderTodoItem);
+
+  addButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (textInputField.value.trim().length === 0) {
+      return;
     }
-  }
+
+    const todoItem = {
+      text: textInputField.value,
+      completed: false,
+      index: todos.length + 1,
+    };
+
+    todos.push(todoItem);
+    saveTodosToLocalStorage();
+
+    textInputField.value = '';
+
+    renderTodoItem(todoItem);
+  });
 
   const clearButton = document.querySelector('.clearer');
 
@@ -123,10 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveTodosToLocalStorage();
   });
-
-  function saveTodosToLocalStorage() {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }
 
   function refreshIt() {
     const refreshIcon = document.querySelector('.refresh-it');
