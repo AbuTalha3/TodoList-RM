@@ -1,5 +1,5 @@
-/* eslint-disable no-use-before-define */
 import './style.css';
+import { updateStatus, clearCompleted } from '../modules/todosStatus.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const textInputField = document.querySelector('#text-input-field');
@@ -8,27 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-  todos.forEach(renderTodoItem);
+  function saveTodosToLocalStorage() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
 
-  addButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (textInputField.value.trim().length === 0) {
-      return;
+  function removeHorizontalLine(todoItemId) {
+    const hrId = `${todoItemId}-hr`;
+    const horizontalLine = document.getElementById(hrId);
+    if (horizontalLine) {
+      horizontalLine.parentElement.removeChild(horizontalLine);
     }
-
-    const todoItem = {
-      text: textInputField.value,
-      completed: false,
-      index: todos.length + 1,
-    };
-
-    todos.push(todoItem);
-    saveTodosToLocalStorage();
-
-    textInputField.value = '';
-
-    renderTodoItem(todoItem);
-  });
+  }
 
   function renderTodoItem(todoItem) {
     const todoItemContainer = document.createElement('div');
@@ -92,21 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     checkbox.addEventListener('change', () => {
       todoItem.completed = checkbox.checked;
+      updateStatus(todoItem.index, checkbox.checked);
       saveTodosToLocalStorage();
-
-      todos.forEach((item, index) => {
-        item.index = index + 1;
-        const itemId = `todo-item-${item.index}`;
-        const todoItemContainer = document.getElementById(itemId);
-        if (todoItemContainer) {
-          const todoText = todoItemContainer.querySelector('#todo-text');
-          const hrId = `${itemId}-hr`;
-          const horizontalLine = document.getElementById(hrId);
-          todoItemContainer.id = `todo-item-${item.index}`;
-          todoText.id = 'todo-text';
-          horizontalLine.id = `${itemId}-hr`;
-        }
-      });
     });
 
     const hr = document.createElement('hr');
@@ -114,18 +91,32 @@ document.addEventListener('DOMContentLoaded', () => {
     todosContainer.appendChild(hr);
   }
 
-  function removeHorizontalLine(todoItemId) {
-    const hrId = `${todoItemId}-hr`;
-    const horizontalLine = document.getElementById(hrId);
-    if (horizontalLine) {
-      horizontalLine.parentElement.removeChild(horizontalLine);
+  todos.forEach(renderTodoItem);
+
+  addButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (textInputField.value.trim().length === 0) {
+      return;
     }
-  }
+
+    const todoItem = {
+      text: textInputField.value,
+      completed: false,
+      index: todos.length + 1,
+    };
+
+    todos.push(todoItem);
+    saveTodosToLocalStorage();
+
+    textInputField.value = '';
+
+    renderTodoItem(todoItem);
+  });
 
   const clearButton = document.querySelector('.clearer');
 
   clearButton.addEventListener('click', () => {
-    todos = todos.filter((item) => !item.completed);
+    todos = clearCompleted(todos);
 
     todosContainer.innerHTML = '';
     todos.forEach((todoItem, index) => {
@@ -135,10 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveTodosToLocalStorage();
   });
-
-  function saveTodosToLocalStorage() {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }
 
   function refreshIt() {
     const refreshIcon = document.querySelector('.refresh-it');
